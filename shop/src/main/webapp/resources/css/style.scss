@@ -1,0 +1,173 @@
+html{
+    body{
+        .w-5{width: 1% !important;}
+        .w-10{width: 10% !important;}
+        .w-30{width: 30% !important;}
+        .bg-gradient-primary{
+            height: 780px;
+            background-color: #4e73df;
+            background-size: cover;
+            background-image: linear-gradient(180deg, rgb(245, 255, 255) 10%, #3774ff 100%);
+        }
+        .bg-gradient-primary2{
+            height: 1200px;
+            background-color: #4e73df;
+            background-size: cover;
+            background-image: linear-gradient(180deg, rgb(245, 255, 255) 10%, #3774ff 100%);
+        }
+        .bg-gradient-primary3{
+            height:max-content;
+            background-color: #4e73df;
+            background-size: cover;
+            background-image: linear-gradient(180deg, rgb(245, 255, 255) 10%, #3774ff 100%);
+            padding: 30px 0;
+        }
+        .bg-nav{
+            background-color: rgb(232, 229, 255);
+            background-size: cover;
+            background-image: linear-gradient(180deg, rgb(248, 245, 255) 10%, rgb(232, 229, 255) 100%);
+        }
+        .bg-sign{
+            background-color: rgb(232, 215, 255);
+            background-size: cover;
+        }
+        .o-hidden{
+            overflow: hidden !important;
+        }
+        .bg-login-image{
+            background:url("../images/login_background.png");
+            background-position: center;
+            background-size: cover;
+        }
+        .text-gray-900{
+            color: #3a3b45 !important;
+        }
+        .form-control-user{
+            font-size: .8rem;
+            border-radius: 10rem;
+            padding: .8rem 1rem;
+        }
+        .small{
+            font-size: 80%;
+            font-weight: 400;
+        }
+        .btn-user{
+            font-size: .8rem;
+            border-radius: 10rem;
+            padding: .5rem 1rem;
+        }
+        .btn-block{
+            display: block;
+            width: 100%;
+        }
+        .bg-register-image{
+            background: url("../images/register_background.jpg");
+            background-position: center;
+            background-size: cover;
+        }
+        .btn-kakao{
+            background-color: #FEE500 !important;
+            font-weight: bold;
+        }
+        .btn-google{
+            background-color: #ff1313 !important;
+        }
+        .btn-twitter{
+            background-color: #00acee !important;
+        }
+        .btn-line{
+            background-color: #06c755 !important;
+        }
+        .btn-apple{
+            background-color: black !important;
+        }
+        .btn-facebook{
+            background-color: #3b5998 !important;
+        }
+        .btn-register{
+            border-radius: 50%;
+            justify-content: center;
+            align-items: center;
+            width: 45px;
+            height: 45px;            
+        }
+        .f-list *{
+            padding: 1rem;
+            list-style: none;
+            color: white;
+            text-decoration: none;
+        }
+        .bg-footer{
+            background-color: #120155;
+        }
+        .f-logo{
+            background: url("../images/logo.png");
+            background-position: center;
+            background-size: cover;
+        }
+        .thumb-container {
+            width: 150px;
+            height: 150px;
+            overflow: hidden; /* 넘치는 부분 잘라냄 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .thumb-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* 비율 유지하면서 작은 쪽 맞추기 */
+        }
+        .thumb-container img:hover {
+            cursor: pointer;
+        }
+        .cell{
+            width: 150px;
+            padding: 15px;
+            background-color: white;
+            border-radius: 10px;
+        }
+        .cell:hover{
+            background-color: #e8e8e8;
+            cursor: pointer;
+        }
+        .cell:active{
+            background-color: #b6b6b6;
+        }
+        .name-space{
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .card-zone{
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .view-image{
+            width: 50%;
+            height: 50%;
+            overflow: hidden; /* 넘치는 부분 잘라냄 */
+        }
+        .view-image img{
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .home-search{
+            width: 50%;
+            background: #fff;
+            border: 5px solid #3774ff ;
+            align-items: center;
+            padding: 5px;
+            display: flex;
+        }
+        .searchbox{
+            background-color: transparent; /* 배경 투명 */
+            border: none; /* 테두리 제거 */
+            font-size: 16px;
+            outline: none; /* 클릭 시 기본 아웃라인 제거 */
+        }
+    }
+}
+@import "modal";

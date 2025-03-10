@@ -1,0 +1,29 @@
+.replyModal{
+    z-index: 2;
+    display: none;
+    .modalContent{
+        z-index:3;
+        position: fixed;
+        top:20%;
+        left:calc(50% - 250px); //50% - (모달창너비)/2
+        width: 530px; height: 300px; padding: 20px 10px;
+        background-color: #fff;
+        border: 2px solid #666;
+        div{
+            textarea{
+                font-size: 1.15rem;
+                padding: .8rem; width: 500px; height: 200px; 
+            }
+        }
+    }
+}
+
+.modalBackground{
+    position: fixed; 
+    top:0; 
+    left:0; 
+    width:100%; 
+    height:100%;
+    background-color: rgba(0,0,0,.8);
+    z-index:1;
+}

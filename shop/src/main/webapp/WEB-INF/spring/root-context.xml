@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.3.xsd
+		http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+	<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
+	<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe"/>
+	<property name="username" value="PORT_USR"/>
+	<property name="password" value="1234"/>	
+	</bean>
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+	<property name="dataSource" ref="dataSource"/>
+	<property name="configLocation" value="classpath:/mybatis-config.xml"/>
+	<property name="mapperLocations" value="classpath:/mappers/**/*Mapper.xml"/>
+	</bean>
+	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+	<constructor-arg index="0" ref="sqlSessionFactory"/>
+	</bean>
+</beans>
+<!-- 
+bean 
+- 주로 스프링에서 사용
+- 객체를 관리하는 기본 단위 Spring loC(컨테이너에 의해 관리되는 객체)
+스프링은 이러한 빈들을 생성하여 최기화 주입, 소멸 하는 등의 작업을 자동으로 처리
+- POJO(Plain Old Java Object)로 구현 될 수 있다
+- 주로 @Component, @Service, @Repository, @Controller등의 어노테이션을 통해 정의되고
+Spring 컨테이너가 이를 관리
+- 설정파일(xml또는 JavaConfig)를 통해 생성 및 관리 방법을 설정
+- 의존성 주입(DI)를 통해 다른 Bean과 상호작용 할 수 있음
+
+component
+- 좀 더 넓은 의미로 사용되는 용어. 일반적으로 시스템 내에서 재사용 가능한 구성요소를 의미
+ -->

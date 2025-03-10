@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.my.shop.mappers.memberMapper">
+	<insert id="signup">
+		<![CDATA[
+			insert into tbl_member(userId, userPass, userPassRe, userName, userPhone, userEmail, userGender, userAddr1, userAddr2, userAddr3, verify) 
+			values
+			(#{userId}, #{userPass}, #{userPassRe}, #{userName}, #{userPhone}, #{userEmail}, #{userGender}, #{userAddr1}, #{userAddr2}, #{userAddr3}, #{verify})
+		]]>
+	</insert>
+	<select id="signin" resultType="com.my.shop.vo.MemberVO">
+		<![CDATA[
+			select userId, userPass, userPassRe, userName, userPhone, userEmail, userGender, userAddr1, userAddr2, userAddr3, verify
+			from 
+			tbl_member where userId = #{userId}
+		]]>
+	</select>
+</mapper>

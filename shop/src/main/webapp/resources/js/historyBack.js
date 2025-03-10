@@ -1,0 +1,3 @@
+historyBack = () => {
+	history.back();
+}

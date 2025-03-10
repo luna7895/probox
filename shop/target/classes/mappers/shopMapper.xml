@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.my.shop.mappers.shopMapper">
+<select id="list_1" resultType="com.my.shop.vo.GoodsViewVO">
+	<![CDATA[
+		select
+		g.gdsNum, g.gdsName, g.cateCode, c.cateCodeRef, c.cateName, gdsPrice, gdsStock, gdsDes, gdsDate, g.gdsImg, g.gdsThumbImg
+		from tbl_goods g
+		inner join goods_category c
+		on g.cateCode = c.cateCode
+		where g.cateCode = #{cateCode}
+		or c.cateCodeRef = #{cateCodeRef}
+	]]>
+</select>
+<select id="list_2" resultType="com.my.shop.vo.GoodsViewVO">
+	<![CDATA[
+		select
+		g.gdsNum, g.gdsName, g.cateCode, c.cateCodeRef, c.cateName, gdsPrice, gdsStock, gdsDes, gdsDate, g.gdsImg, g.gdsThumbImg
+		from tbl_goods g
+		inner join goods_category c
+		on g.cateCode = c.cateCode
+		where g.cateCode = #{cateCode}
+		or c.cateCodeRef = #{cateCodeRef}
+	]]>
+</select>
+<select id="subCateList" resultType="com.my.shop.vo.CategoryVO">
+	<![CDATA[
+		select cateCode, cateCodeRef, cateName
+		from goods_category
+		where cateCodeRef = #{cateCode}
+		ORDER BY cateCode ASC
+	]]>
+</select>
+<select id="searchItem" resultType="com.my.shop.vo.GoodsViewVO">
+	<![CDATA[
+		select
+		g.gdsNum, g.gdsName, g.cateCode, c.cateCodeRef, c.cateName, gdsPrice, gdsStock, g.gdsDes, gdsDate, g.gdsImg, g.gdsThumbImg
+		from tbl_goods g
+		inner join goods_category c
+		on g.cateCode = c.cateCode
+		where g.gdsName like #{searchKeyword}
+		or g.gdsDes like #{searchKeyword}
+	]]>
+</select>
+<select id="goodsView" resultType="com.my.shop.vo.GoodsViewVO">
+	<![CDATA[
+		select
+		g.gdsNum, g.gdsName, g.cateCode, c.cateCodeRef, c.cateName, gdsPrice, gdsStock, gdsDes, gdsDate, g.gdsImg, g.gdsThumbImg
+		from tbl_goods g
+		inner join goods_category c
+		on g.cateCode = c.cateCode
+		where g.gdsNum = #{gdsNum}
+	]]>
+</select>
+<!-- 
+소비자가 보는 페이지를 최초 리스트를 만듦
+- 특징 -
+카테고리별로 분류가 되어야 한다(군을 설정 level 1dpth 2depth)
+리스트를 2단계로 표현해야 함
+조인을 실행
+군을 설정해서 내비게이션에서 클릭할 때 그 군에 상품만 보여줘야 된다
+ -->
+ 
+<!-- 댓글 시작 -->
+<insert id="registReply">
+	<![CDATA[
+		insert into tbl_reply(gdsNum, userId, repNum, repCon)
+		values
+		(#{gdsNum}, #{userId}, seq_tbl_reply.nextval, #{repCon})
+	]]>
+</insert>
+
+<select id="replyList" resultType="com.my.shop.vo.ReplyListVO">
+	<![CDATA[
+		select
+		r.gdsNum, r.userId, r.repNum, r.repCon, r.repDate, m.userName
+		from tbl_reply r 
+		inner join tbl_member m
+		on r.userId = m.userId
+		where gdsNum = #{gdsNum}
+	]]>
+</select>
+<delete id="deleteReply"> <!-- 세션 때문에 기준을 두 개  -->
+	delete tbl_reply
+	where repNum = #{repNum} and userId = #{userId}
+</delete>
+
+<!-- 아이디 체크 -->
+<select id="replyUserIdCheck" resultType="String">
+	<![CDATA[
+		select
+		userId from tbl_reply 
+		where repNum = #{repNum}
+	]]>
+</select>
+
+<update id="modifyReply">
+	<![CDATA[
+		udate tbl_reply
+		set
+		repCon = #{reqCon}
+		where repNum = #{repNum}
+		and userId = #{userId}
+	]]>
+</update>
+<!-- 댓글 끗 -->
+
+<!-- 카트 담기 -->
+<insert id="addCart">
+	<![CDATA[
+		insert into tbl_cart(cartNum, userId, gdsNum, cartStock)
+		values
+		(seq_tbl_cart.nextval, #{userId}, #{gdsNum}, #{cartStock})
+	]]>
+</insert>
+
+<!-- 카트리스트 -->
+<select id="cartList" resultType="com.my.shop.vo.CartListVO">
+	<![CDATA[
+		select
+		row_number() over(order by c.cartNum desc) as num,
+		c.cartNum, c.userId, c.gdsNum, c.cartStock, c.addDate, 
+		g.gdsName, g.gdsPrice, g.gdsThumbImg
+		from tbl_cart c
+		inner join tbl_goods g
+		on c.gdsNum = g.gdsNum
+		where c.userId = #{userId}
+	]]>
+</select>
+<!-- row_number() over(order by c.cartNum desc) as num,
+내림차순 row_number()[윈도우 함수 ] 각 행에 고유한 번호를 할당 cartNum
+row_number()[윈도우 함수 ] 번호는 기본적으로 1부터 시작하여 행의 순서에 따라 증가
+주의사항은 동일한 값에 대해서 고유한 번호를 부여 여러번 나타나더라도 번호가 틀려짐.
+ -->
+ 
+<!-- 카트 삭제 -->
+<delete id="deleteCart">
+	<![CDATA[
+		delete tbl_cart
+		where cartNum = #{cartNum}
+		and userId = #{userId}
+	]]>
+</delete>
+<delete id="cartAllDelete">
+	<![CDATA[
+		delete tbl_cart
+		where userId = #{userId}
+	]]>
+</delete>
+<!-- 주문 정보 -->
+<insert id="orderInfo"><!-- sql mapping query #{} 배개변수 바인딩[이부분은 실행 시점에서 실제값으로 대체] 예를 들어 #{orderId}는 orderId라는 변수의 값으로 바뀜 -->
+	<![CDATA[
+		insert into tbl_order(orderId, userId, orderRec, userAddr1, userAddr2, userAddr3, orderPhone, amount)
+		values
+		(#{orderId}, #{userId}, #{orderRec}, #{userAddr1}, #{userAddr2}, #{userAddr3}, #{orderPhone}, #{amount})
+	]]>
+</insert>
+<!-- 주문 상세 정보 -->
+<insert id="orderInfo_Details">
+	<![CDATA[
+		insert into tbl_order_details(orderDetailsNum, orderId, gdsNum, cartStock)
+		select seq_tbl_order_details.nextval, #{orderId}, gdsNum, cartStock
+		from tbl_cart
+	]]>
+</insert>
+<!-- 특정 주문 목록 -->
+<select id="orderList" resultType="com.my.shop.vo.OrderVO">
+	<![CDATA[
+		select
+		orderId, userId, orderRec, userAddr1, userAddr2, userAddr3, orderPhone, amount, orderDate, delivery
+		from tbl_order
+		where userId = #{userId}
+	]]>
+</select>
+<select id="orderView" resultType="com.my.shop.vo.OrderListVO">
+	<![CDATA[
+		select
+		o.orderId, o.userId, orderRec, o.userAddr1, o.userAddr2, o.userAddr3, o.orderPhone, o.amount, o.orderDate,
+		d.orderDetailsNum, d.gdsNum, d.cartStock, 
+		g.gdsName, g.gdsThumbImg, g.gdsPrice
+		from tbl_order o
+		inner join tbl_order_details d
+		on o.orderId =d.orderId 
+		inner join tbl_goods g
+		on d.gdsNum = g.gdsNum
+		where o.userId = #{userId} and o.orderId = #{orderId}
+	]]>
+</select>
+</mapper>
+<!-- 
+
+ -->
